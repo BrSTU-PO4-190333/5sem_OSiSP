@@ -13,11 +13,13 @@ SOURCES += \
     gpi_font.cpp \
     gpi_gamewindow.cpp \
     gpi_helper.cpp \
+    gpi_helper_class.cpp \
     main.cpp \
     gpi_mainwindow.cpp
 
 HEADERS += \
     gpi_gamewindow.hpp \
+    gpi_helper_class.hpp \
     gpi_mainwindow.hpp
 
 FORMS += \
