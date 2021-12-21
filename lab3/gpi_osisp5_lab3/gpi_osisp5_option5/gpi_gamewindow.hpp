@@ -5,6 +5,8 @@
 #include <QTimer>
 #include <QPainter>
 #include <QKeyEvent>
+#include <QLibrary>
+#include <QMessageBox>
 
 namespace Ui {
 class gpi_GameWindow;
@@ -53,10 +55,6 @@ private slots:
     void gpi_on_gpi_action_restart_triggered();
 };
 
-QStringList gpi_get_1_level();
-QStringList gpi_get_2_level();
-QStringList gpi_get_3_level();
-QStringList gpi_get_4_level();
 QString get_image_path(gpi_fields gpi_f);
 void gpi_goTop(gpi_fields& gpi_f0, gpi_fields& gpi_f1, gpi_fields& gpi_f2, int& gpi_py);
 void gpi_goBottom(gpi_fields& gpi_f0, gpi_fields& gpi_f1, gpi_fields& gpi_f2, int& gpi_py, int gpi_max_y);

@@ -10,6 +10,7 @@ CONFIG += c++11
 
 SOURCES += \
     gpi_gamewindow.cpp \
+    gpi_helper.cpp \
     main.cpp \
     gpi_mainwindow.cpp
 

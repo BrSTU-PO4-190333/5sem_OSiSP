@@ -355,41 +355,6 @@ void gpi_GameWindow::gpi_on_gpi_action_4_lvl_triggered()
     gpi_on_gpi_action_restart_triggered();
 }
 
-// gpi_ Функция, которая рестратит уровень
-void gpi_GameWindow::gpi_on_gpi_action_restart_triggered()
-{
-    if (this->gpi_lvl == 1)
-    {
-        gpi_generate(gpi_get_1_level());
-        gpi_on_gpi_action_align_triggered();
-        return;
-    }
-
-    if (this->gpi_lvl == 2)
-    {
-        gpi_generate(gpi_get_2_level());
-        gpi_on_gpi_action_align_triggered();
-        return;
-    }
-
-    if (this->gpi_lvl == 3)
-    {
-        gpi_generate(gpi_get_3_level());
-        gpi_on_gpi_action_align_triggered();
-        return;
-    }
-
-    if (this->gpi_lvl == 4)
-    {
-        gpi_generate(gpi_get_4_level());
-        gpi_on_gpi_action_align_triggered();
-        return;
-    }
-
-    gpi_generate(gpi_get_1_level());
-    gpi_on_gpi_action_align_triggered();
-}
-
 // gpi_ Функция, которая отслеживает нажатие клавиш
 void gpi_GameWindow::keyPressEvent(QKeyEvent *e)
 {
