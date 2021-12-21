@@ -5,6 +5,8 @@
 #include <QMessageBox>
 #include <QLibrary>
 #include <QDebug>
+#include <QFontDialog>
+#include <QSettings>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class gpi_MainWindow; }
@@ -22,6 +24,7 @@ private slots:
     void on_gpi_pushButton_start_clicked();
     void on_gpi_pushButton_close_clicked();
     void gpi_on_gpi_action_about_triggered();
+    void gpi_on_gpi_action_font_triggered();
 
 private:
     Ui::gpi_MainWindow *ui;

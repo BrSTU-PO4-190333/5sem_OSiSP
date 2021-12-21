@@ -8,7 +8,13 @@ gpi_MainWindow::gpi_MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     this->setWindowIcon (QIcon (":/@/_assets/gpi_favicon.png"));
+
+    QVariant gpi_variant = QSettings(this).value("gpi_VIEWF");
+    QFont gpi_font = gpi_variant.value<QFont>();
+    ui->centralwidget->setFont(gpi_font);
+
     connect(ui->gpi_action_about, SIGNAL(triggered()), this, SLOT(gpi_on_gpi_action_about_triggered()));
+    connect(ui->gpi_action_font, SIGNAL(triggered()), this, SLOT(gpi_on_gpi_action_font_triggered()));
 }
 
 gpi_MainWindow::~gpi_MainWindow()
