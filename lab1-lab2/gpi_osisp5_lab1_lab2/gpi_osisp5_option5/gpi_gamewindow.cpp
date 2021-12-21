@@ -162,10 +162,10 @@ int gpi_max_width;
     qDebug() << "gpi_mapWidth: " << this->gpi_mapWidth;
 
     // gpi_ Заполняем карту
-    for (gpi_i = 0; gpi_i < 100; ++gpi_i)
+    for (gpi_i = 0; gpi_i < this->gpi_mapWidth; ++gpi_i)
     {
         QVector<gpi_fields> gpi_1d_arr;
-        for (gpi_j = 0; gpi_j < 100; ++gpi_j)
+        for (gpi_j = 0; gpi_j < this->gpi_mapHeight; ++gpi_j)
         {
             gpi_1d_arr.push_back(gpi_err);
         }
