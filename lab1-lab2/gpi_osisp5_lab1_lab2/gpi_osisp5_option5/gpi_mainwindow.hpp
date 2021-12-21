@@ -15,6 +15,9 @@ public:
     gpi_MainWindow(QWidget *parent = nullptr);
     ~gpi_MainWindow();
 
+private slots:
+    void on_gpi_pushButton_start_clicked();
+
 private:
     Ui::gpi_MainWindow *ui;
 };
