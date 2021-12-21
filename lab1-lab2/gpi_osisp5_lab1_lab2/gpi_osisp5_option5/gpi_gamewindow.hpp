@@ -2,6 +2,8 @@
 #define GPI_GAMEWINDOW_HPP
 
 #include <QMainWindow>
+#include <QTimer>
+#include <QPainter>
 
 namespace Ui {
 class gpi_GameWindow;
@@ -26,17 +28,23 @@ public:
     explicit gpi_GameWindow(QWidget *parent = nullptr);
     ~gpi_GameWindow();
 
+protected:
+    void paintEvent(QPaintEvent *event) override;
+
 private:
     Ui::gpi_GameWindow *ui;
-    QPainter* gpi_painter;
     QVector <QVector<gpi_fields>> gpi_map;
     void gpi_generate(QStringList gpi_str_map);
     int gpi_xPlayer;
     int gpi_yPlayer;
     int gpi_mapHeight;
     int gpi_mapWidth;
+
+private slots:
+    void gpi_animate();
 };
 
 QStringList gpi_get_1_level();
+QString get_image_path(gpi_fields gpi_f);
 
 #endif // GPI_GAMEWINDOW_HPP

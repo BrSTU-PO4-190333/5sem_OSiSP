@@ -5,7 +5,15 @@ gpi_GameWindow::gpi_GameWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::gpi_GameWindow)
 {
+QTimer* gpi_timer;
+// = = = = = = = = = = = = = = = =
     ui->setupUi(this);
+
+    // Устанавливаю таймер
+    gpi_timer = new QTimer(this);
+    connect (gpi_timer, SIGNAL(timeout()), this, SLOT(gpi_animate()));
+    gpi_timer->start(100);
+
     gpi_generate(gpi_get_1_level());
 }
 
@@ -96,15 +104,6 @@ int gpi_max_width;
             }
 
             // Если это игрок
-            if (gpi_str_map[gpi_i][gpi_j] == 'x')
-            {
-                this->gpi_map[gpi_i][gpi_j] = gpi_player;
-                this->gpi_xPlayer = gpi_i;
-                this->gpi_yPlayer = gpi_j;
-                continue;
-            }
-
-            // Если это игрок
             if (gpi_str_map[gpi_i][gpi_j] == '@')
             {
                 this->gpi_map[gpi_i][gpi_j] = gpi_player;
@@ -147,4 +146,83 @@ int gpi_max_width;
     }
 
     qDebug() << this->gpi_map;
+}
+
+void gpi_GameWindow::gpi_animate()
+{
+    qDebug() << "qqq";
+    repaint();
+}
+
+void gpi_GameWindow::paintEvent(QPaintEvent *event)
+{
+int gpi_i;
+int gpi_j;
+int gpi_xk;
+int gpi_yk;
+QString gpi_img_path;
+// = = = = = = = = = = = = = = = = =
+    Q_UNUSED (event); // gpi_ Убираем предупреждение Qt о не использовании перемменной
+    QPainter gpi_painter(this);
+
+    // Определяем коэффициенты расшерения ячеек массива
+    gpi_yk = this->height() / this->gpi_mapHeight;
+    gpi_xk = this->width() / this->gpi_mapWidth;
+
+    for (gpi_i = 0; gpi_i < this->gpi_mapHeight; ++ gpi_i)
+    {
+        for (gpi_j = 0; gpi_j < this->gpi_mapWidth; ++gpi_j)
+        {
+            gpi_img_path = get_image_path(this->gpi_map[gpi_i][gpi_j]);
+            QPixmap gpi_pixmap(gpi_img_path);
+            gpi_painter.drawPixmap(gpi_xk * gpi_i, gpi_yk * gpi_j, gpi_xk, gpi_yk, gpi_pixmap);
+        }
+    }
+}
+
+QString get_image_path(gpi_fields gpi_f)
+{
+    // Если это пол
+    if (gpi_f == gpi_floor)
+    {
+        return ":/@/_assets/gpi_GameWindow__floor.png";
+    }
+
+    // Если это стена
+    if (gpi_f == gpi_wall)
+    {
+        return ":/@/_assets/gpi_GameWindow__wall.png";
+    }
+
+    // Если это игрок
+    if (gpi_f == gpi_player)
+    {
+        return ":/@/_assets/gpi_GameWindow__player.png";
+    }
+
+    // Если это финиш
+    if (gpi_f == gpi_finish)
+    {
+        return ":/@/_assets/gpi_GameWindow__finish.png";
+    }
+
+    // Если это игрок на финише
+    if (gpi_f == gpi_finPlayer)
+    {
+        return ":/@/_assets/gpi_GameWindow__finPlayer.png";
+    }
+
+    // Если это коробка
+    if (gpi_f == gpi_box)
+    {
+        return ":/@/_assets/gpi_GameWindow__box.png";
+    }
+
+    // Если это коробка на финише
+    if (gpi_f == gpi_finBox)
+    {
+        return ":/@/_assets/gpi_GameWindow__finBox.png";
+    }
+
+    return ":/@/_assets/gpi_GameWindow__err.png";
 }
