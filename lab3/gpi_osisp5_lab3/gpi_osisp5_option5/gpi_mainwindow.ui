@@ -80,8 +80,20 @@
      <height>25</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>О программе</string>
+    </property>
+    <addaction name="gpi_action_about"/>
+   </widget>
+   <addaction name="menu"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="gpi_action_about">
+   <property name="text">
+    <string>Об авторе</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

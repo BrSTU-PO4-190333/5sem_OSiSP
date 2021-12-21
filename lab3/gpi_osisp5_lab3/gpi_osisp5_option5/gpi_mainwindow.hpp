@@ -2,6 +2,9 @@
 #define GPI_MAINWINDOW_HPP
 
 #include <QMainWindow>
+#include <QMessageBox>
+#include <QLibrary>
+#include <QDebug>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class gpi_MainWindow; }
@@ -18,6 +21,7 @@ public:
 private slots:
     void on_gpi_pushButton_start_clicked();
     void on_gpi_pushButton_close_clicked();
+    void gpi_on_gpi_action_about_triggered();
 
 private:
     Ui::gpi_MainWindow *ui;

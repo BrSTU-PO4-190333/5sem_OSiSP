@@ -53,6 +53,7 @@ private slots:
     void gpi_on_gpi_action_3_lvl_triggered();
     void gpi_on_gpi_action_4_lvl_triggered();
     void gpi_on_gpi_action_restart_triggered();
+    void gpi_on_gpi_action_about_triggered();
 };
 
 QString get_image_path(gpi_fields gpi_f);

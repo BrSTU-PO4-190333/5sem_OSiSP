@@ -35,7 +35,14 @@
     <addaction name="gpi_action_3_lvl"/>
     <addaction name="gpi_action_4_lvl"/>
    </widget>
+   <widget class="QMenu" name="menu_2">
+    <property name="title">
+     <string>О программе</string>
+    </property>
+    <addaction name="gpi_action_about"/>
+   </widget>
    <addaction name="menu"/>
+   <addaction name="menu_2"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="gpi_action_align">
@@ -66,6 +73,11 @@
   <action name="gpi_action_restart">
    <property name="text">
     <string>gpi_ Переиграть</string>
+   </property>
+  </action>
+  <action name="gpi_action_about">
+   <property name="text">
+    <string>Об авторе</string>
    </property>
   </action>
  </widget>

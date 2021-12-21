@@ -8,6 +8,7 @@ gpi_MainWindow::gpi_MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     this->setWindowIcon (QIcon (":/@/_assets/gpi_favicon.png"));
+    connect(ui->gpi_action_about, SIGNAL(triggered()), this, SLOT(gpi_on_gpi_action_about_triggered()));
 }
 
 gpi_MainWindow::~gpi_MainWindow()

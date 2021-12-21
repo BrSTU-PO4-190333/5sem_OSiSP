@@ -20,6 +20,7 @@ QTimer* gpi_timer;
     connect(ui->gpi_action_3_lvl, SIGNAL(triggered()), this, SLOT(gpi_on_gpi_action_3_lvl_triggered()));
     connect(ui->gpi_action_4_lvl, SIGNAL(triggered()), this, SLOT(gpi_on_gpi_action_4_lvl_triggered()));
     connect(ui->gpi_action_restart, SIGNAL(triggered()), this, SLOT(gpi_on_gpi_action_restart_triggered()));
+    connect(ui->gpi_action_about, SIGNAL(triggered()), this, SLOT(gpi_on_gpi_action_about_triggered()));
 
     gpi_on_gpi_action_restart_triggered();
 }
