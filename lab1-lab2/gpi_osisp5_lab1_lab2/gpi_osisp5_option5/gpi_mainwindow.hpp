@@ -17,6 +17,7 @@ public:
 
 private slots:
     void on_gpi_pushButton_start_clicked();
+    void on_gpi_pushButton_close_clicked();
 
 private:
     Ui::gpi_MainWindow *ui;
