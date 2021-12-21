@@ -62,23 +62,21 @@ QStringList gpi_get_2_level()
 QStringList gpi_str_map;
 // = = = = = = = = = = = = = = = =
     gpi_str_map = {
-        "xxxxxxxxxxxxxxx",
-        "xxxxxxxxxxxxxxx",
-        "xxxxxxxxxxxxxxx",
-        "xxxxxxxxxxxxxxx",
-        "xxxxxx...xxxxxx",
-        "xxxxf@b..xxxxxx",
-        "xxxxxx.bfxxxxxx",
-        "xxxxfxxb.xxxxxx",
-        "xxxx.x.f.xxxxxx",
-        "xxxxb.Bbbfxxxxx",
-        "xxxx...f..xxxxx",
-        "xxxxxxxxxxxxxxx",
-        "xBxBxxxxxxxxxxx",
-        "xBxBxxxxxxxxxxx",
-        "xBxBxxxxxxxxxxx",
-        "xBxBxxxxxxxxxxx",
-        "xxxxxxxxxxxxxxx"
+        "xxxxxxx.xxxxxxxxxxxxxxxxxxxxxx",
+        "xxxxxxx.xxxxxxxxxxxxxxxxxxxxxx",
+        "xx...xx.xx..................xx",
+        "xx....x.x...................xx",
+        "xx..........bbbbbbbbbbb.....xx",
+        "xxx........................xxx",
+        "xxxx......................xxxx",
+        ".......@..........b...........",
+        "xxxx..............fff.....xxxx",
+        "xxx....x..........fff......xxx",
+        "xx................fff.......xx",
+        "xx....x.x.........fff.......xx",
+        "xx...xx.xx..................xx",
+        "xxxxxxx.xxxxxxxxxxxxxxxxxxxxxx",
+        "xxxxxxx.xxxxxxxxxxxxxxxxxxxxxx",
     };
     return gpi_str_map;
 }
@@ -390,4 +388,631 @@ void gpi_GameWindow::gpi_on_gpi_action_restart_triggered()
 
     gpi_generate(gpi_get_1_level());
     gpi_on_gpi_action_align_triggered();
+}
+
+// gpi_ Функция, которая отслеживает нажатие клавиш
+void gpi_GameWindow::keyPressEvent(QKeyEvent *e)
+{
+    if (e->key() == Qt::Key_Up || e->key() == Qt::Key_W)
+    {
+        qDebug() << "up";
+        gpi_goTop(
+            this->gpi_map[this->gpi_xPlayer][this->gpi_yPlayer],
+            this->gpi_map[this->gpi_xPlayer][this->gpi_yPlayer - 1],
+            this->gpi_map[this->gpi_xPlayer][this->gpi_yPlayer - 2],
+            this->gpi_yPlayer
+        );
+        return;
+    }
+
+    if (e->key() == Qt::Key_Right || e->key() == Qt::Key_D)
+    {
+        qDebug() << "right";
+        gpi_goRight(
+            this->gpi_map[this->gpi_xPlayer][this->gpi_yPlayer],
+            this->gpi_map[this->gpi_xPlayer + 1][this->gpi_yPlayer],
+            this->gpi_map[this->gpi_xPlayer + 2][this->gpi_yPlayer],
+            this->gpi_xPlayer,
+            this->gpi_mapWidth
+        );
+        return;
+    }
+
+    if (e->key() == Qt::Key_Down || e->key() == Qt::Key_S)
+    {
+        qDebug() << "down";
+        gpi_goBottom(
+            this->gpi_map[this->gpi_xPlayer][this->gpi_yPlayer],
+            this->gpi_map[this->gpi_xPlayer][this->gpi_yPlayer + 1],
+            this->gpi_map[this->gpi_xPlayer][this->gpi_yPlayer + 2],
+            this->gpi_yPlayer,
+            this->gpi_mapHeight
+        );
+        return;
+    }
+
+    if (e->key() == Qt::Key_Left || e->key() == Qt::Key_A)
+    {
+        qDebug() << "left";
+        gpi_goLeft(
+            this->gpi_map[this->gpi_xPlayer][this->gpi_yPlayer],
+            this->gpi_map[this->gpi_xPlayer - 1][this->gpi_yPlayer],
+            this->gpi_map[this->gpi_xPlayer - 2][this->gpi_yPlayer],
+            this->gpi_xPlayer
+        );
+        return;
+    }
+}
+
+void gpi_goTop(gpi_fields& gpi_f0, gpi_fields& gpi_f1, gpi_fields& gpi_f2, int& gpi_py)
+{
+    if (gpi_py == 2)
+    {
+        return;
+    }
+
+    // Было: player > floor > ...
+    // Стало: floor > player > ...
+    if (gpi_f0 == gpi_player && gpi_f1 == gpi_floor)
+    {
+        gpi_py -= 1;
+        gpi_f0 = gpi_floor;
+        gpi_f1 = gpi_player;
+        return;
+    }
+
+    // Было: finPlayer > floor > ...
+    // Стало: finish > player > ...
+    if (gpi_f0 == gpi_finPlayer && gpi_f1 == gpi_floor)
+    {
+        gpi_py -= 1;
+        gpi_f0 = gpi_finish;
+        gpi_f1 = gpi_player;
+        return;
+    }
+
+    // Было: player > finish > ...
+    // Стало: floor > finPlayer > ...
+    if (gpi_f0 == gpi_player && gpi_f1 == gpi_finish)
+    {
+        gpi_py -= 1;
+        gpi_f0 = gpi_floor;
+        gpi_f1 = gpi_finPlayer;
+        return;
+    }
+
+    // Было: finPlayer > finish > ...
+    // Стало: finish > finPlayer > ...
+    if (gpi_f0 == gpi_finPlayer && gpi_f1 == gpi_finish)
+    {
+        gpi_py -= 1;
+        gpi_f0 = gpi_finish;
+        gpi_f1 = gpi_finPlayer;
+        return;
+    }
+
+    // Было: player > box > floor
+    // Стало: floor > player > box
+    if (gpi_f0 == gpi_player && gpi_f1 == gpi_box && gpi_f2 == gpi_floor)
+    {
+        gpi_py -= 1;
+        gpi_f0 = gpi_floor;
+        gpi_f1 = gpi_player;
+        gpi_f2 = gpi_box;
+        return;
+    }
+
+    // Было: finPlayer > box > floor
+    // Стало: finish > player > box
+    if (gpi_f0 == gpi_finPlayer && gpi_f1 == gpi_box && gpi_f2 == gpi_floor)
+    {
+        gpi_py -= 1;
+        gpi_f0 = gpi_finish;
+        gpi_f1 = gpi_player;
+        gpi_f2 = gpi_box;
+        return;
+    }
+
+    // Было: player > box > finish
+    // Стало: floor > player > finBox
+    if (gpi_f0 == gpi_player && gpi_f1 == gpi_box && gpi_f2 == gpi_finish)
+    {
+        gpi_py -= 1;
+        gpi_f0 = gpi_floor;
+        gpi_f1 = gpi_player;
+        gpi_f2 = gpi_finBox;
+        return;
+    }
+
+    // Было: finPlayer > box > finish
+    // Стало: finish > player > finBox
+    if (gpi_f0 == gpi_finPlayer && gpi_f1 == gpi_box && gpi_f2 == gpi_finish)
+    {
+        gpi_py -= 1;
+        gpi_f0 = gpi_finish;
+        gpi_f1 = gpi_player;
+        gpi_f2 = gpi_finBox;
+        return;
+    }
+
+    // Было: player > finBox > floor
+    // Стало: floor > finPlayer > box
+    if (gpi_f0 == gpi_player && gpi_f1 == gpi_finBox && gpi_f2 == gpi_floor)
+    {
+        gpi_py -= 1;
+        gpi_f0 = gpi_floor;
+        gpi_f1 = gpi_finPlayer;
+        gpi_f2 = gpi_box;
+        return;
+    }
+
+    // Было: finPlayer > finBox > floor
+    // Стало: finish > finPlayer > box
+    if (gpi_f0 == gpi_finPlayer && gpi_f1 == gpi_finBox && gpi_f2 == gpi_floor)
+    {
+        gpi_py -= 1;
+        gpi_f0 = gpi_finish;
+        gpi_f1 = gpi_finPlayer;
+        gpi_f2 = gpi_box;
+        return;
+    }
+
+    // Было: player > finBox > finish
+    // Стало: floor > finPlayer > finBox
+    if (gpi_f0 == gpi_player && gpi_f1 == gpi_finBox && gpi_f2 == gpi_finish)
+    {
+        gpi_py -= 1;
+        gpi_f0 = gpi_floor;
+        gpi_f1 = gpi_finPlayer;
+        gpi_f2 = gpi_finBox;
+        return;
+    }
+
+    // Было: finPlayer > finBox > finish
+    // Стало: finish > finPlayer > finBox
+    if (gpi_f0 == gpi_finPlayer && gpi_f1 == gpi_finBox && gpi_f2 == gpi_finish)
+    {
+        gpi_py -= 1;
+        gpi_f0 = gpi_finish;
+        gpi_f1 = gpi_finPlayer;
+        gpi_f2 = gpi_finBox;
+        return;
+    }
+}
+
+void gpi_goBottom(gpi_fields& gpi_f0, gpi_fields& gpi_f1, gpi_fields& gpi_f2, int& gpi_py, int gpi_max_y)
+{
+    if (gpi_py >= gpi_max_y - 1)
+    {
+        return;
+    }
+
+    // Было: gpi_player > gpi_floor > ...
+    // Стало: gpi_floor > gpi_player > ...
+    if (gpi_f0 == gpi_player && gpi_f1 == gpi_floor)
+    {
+        gpi_py += 1;
+
+        gpi_f0 = gpi_floor;
+        gpi_f1= gpi_player;
+        return;
+    }
+
+    // Было: gpi_finPlayer > gpi_floor > ...
+    // Стало: gpi_finish > gpi_player > ...
+    if (gpi_f0 == gpi_finPlayer && gpi_f1 == gpi_floor)
+    {
+        gpi_py += 1;
+
+        gpi_f0 = gpi_finish;
+        gpi_f1= gpi_player;
+        return;
+    }
+
+    // Было: gpi_player > gpi_finish > ...
+    // Стало: gpi_floor > gpi_finPlayer > ...
+    if (gpi_f0 == gpi_player && gpi_f1 == gpi_finish)
+    {
+        gpi_py += 1;
+        gpi_f0 = gpi_floor;
+        gpi_f1= gpi_finPlayer;
+        return;
+    }
+
+    // Было: gpi_finPlayer > gpi_finish > ...
+    // Стало: gpi_finish > gpi_finPlayer > ...
+    if (gpi_f0 == gpi_finPlayer && gpi_f1 == gpi_finish)
+    {
+        gpi_py += 1;
+        gpi_f0 = gpi_finish;
+        gpi_f1= gpi_finPlayer;
+        return;
+    }
+
+    // Было: gpi_player > gpi_box > gpi_floor
+    // Стало: gpi_floor > gpi_player > gpi_box
+    if (gpi_f0 == gpi_player && gpi_f1 == gpi_box && gpi_f2 == gpi_floor)
+    {
+        gpi_py += 1;
+
+        gpi_f0 = gpi_floor;
+        gpi_f1= gpi_player;
+        gpi_f2 = gpi_box;
+        return;
+    }
+
+    // Было: gpi_finPlayer > gpi_box > gpi_floor
+    // Стало: gpi_finish > gpi_player > gpi_box
+    if (gpi_f0 == gpi_finPlayer && gpi_f1 == gpi_box && gpi_f2 == gpi_floor)
+    {
+        gpi_py += 1;
+
+        gpi_f0 = gpi_finish;
+        gpi_f1= gpi_player;
+        gpi_f2 = gpi_box;
+        return;
+    }
+
+    // Было: gpi_player > gpi_finBox > gpi_floor
+    // Стало: gpi_floor > gpi_finPlayer > gpi_box
+    if (gpi_f0 == gpi_player && gpi_f1 == gpi_finBox && gpi_f2 == gpi_floor)
+    {
+        gpi_py += 1;
+
+        gpi_f0 = gpi_floor;
+        gpi_f1= gpi_finPlayer;
+        gpi_f2 = gpi_box;
+        return;
+    }
+
+    // Было: gpi_finPlayer > gpi_finBox > gpi_floor
+    // Стало: gpi_finish > gpi_finPlayer > gpi_box
+    if (gpi_f0 == gpi_finPlayer && gpi_f1 == gpi_finBox && gpi_f2 == gpi_floor)
+    {
+        gpi_py += 1;
+        gpi_f0 = gpi_finish;
+        gpi_f1= gpi_finPlayer;
+        gpi_f2 = gpi_box;
+        return;
+    }
+
+    // Было: gpi_player > gpi_box > gpi_finish
+    // Стало: gpi_floor > gpi_player > gpi_finBox
+    if (gpi_f0 == gpi_player && gpi_f1 == gpi_box && gpi_f2 == gpi_finish)
+    {
+        gpi_py += 1;
+        gpi_f0 = gpi_floor;
+        gpi_f1= gpi_player;
+        gpi_f2 = gpi_finBox;
+        return;
+    }
+
+    // Было: gpi_finPlayer > gpi_box > gpi_finish
+    // Стало: gpi_finish > gpi_player > gpi_finBox
+    if (gpi_f0 == gpi_finPlayer && gpi_f1 == gpi_box && gpi_f2 == gpi_finish)
+    {
+        gpi_py += 1;
+        gpi_f0 = gpi_finish;
+        gpi_f1= gpi_player;
+        gpi_f2 = gpi_finBox;
+        return;
+    }
+
+    // Было: gpi_player > gpi_finBox > gpi_finish
+    // Стало: gpi_floor > gpi_finPlayer > gpi_finBox
+    if (gpi_f0 == gpi_player && gpi_f1 == gpi_finBox && gpi_f2 == gpi_finish)
+    {
+        gpi_py += 1;
+        gpi_f0 = gpi_floor;
+        gpi_f1= gpi_finPlayer;
+        gpi_f2 = gpi_finBox;
+        return;
+    }
+
+    // Было: gpi_finPlayer > gpi_finBox > gpi_finish
+    // Стало: gpi_finish > gpi_finPlayer > gpi_finBox
+    if (gpi_f0 == gpi_finPlayer && gpi_f1 == gpi_finBox && gpi_f2 == gpi_finish)
+    {
+        gpi_py += 1;
+        gpi_f0 = gpi_finish;
+        gpi_f1= gpi_finPlayer;
+        gpi_f2 = gpi_finBox;
+        return;
+    }
+}
+
+void gpi_goRight(gpi_fields& gpi_f0, gpi_fields& gpi_f1, gpi_fields& gpi_f2, int& gpi_px, int gpi_max_x)
+{
+    if (gpi_px >= gpi_max_x - 1)
+    {
+        return;
+    }
+
+    // Было: gpi_player > gpi_floor > ...
+    // Стало: gpi_floor > gpi_player > ...
+    if (gpi_f0 == gpi_player && gpi_f1 == gpi_floor)
+    {
+        gpi_px += 1;
+
+        gpi_f0 = gpi_floor;
+        gpi_f1 = gpi_player;
+        return;
+    }
+
+    // Было: gpi_finPlayer > gpi_floor > ...
+    // Стало: gpi_finish > gpi_player > ...
+    if (gpi_f0 == gpi_finPlayer && gpi_f1 == gpi_floor)
+    {
+        gpi_px += 1;
+
+        gpi_f0 = gpi_finish;
+        gpi_f1 = gpi_player;
+        return;
+    }
+
+    // Было: gpi_player > gpi_finish > ...
+    // Стало: gpi_floor > gpi_finPlayer > ...
+    if (gpi_f0 == gpi_player && gpi_f1 == gpi_finish)
+    {
+        gpi_px += 1;
+
+        gpi_f0 = gpi_floor;
+        gpi_f1 = gpi_finPlayer;
+        return;
+    }
+
+    // Было: gpi_finPlayer > gpi_finish > ...
+    // Стало: gpi_finish > gpi_finPlayer > ...
+    if (gpi_f0 == gpi_finPlayer && gpi_f1 == gpi_finish)
+    {
+        gpi_px += 1;
+
+        gpi_f0 = gpi_finish;
+        gpi_f1 = gpi_finPlayer;
+        return;
+    }
+
+    // Было: gpi_player > gpi_box > gpi_floor
+    // Стало: gpi_floor > gpi_player > gpi_box
+    if (gpi_f0 == gpi_player && gpi_f1 == gpi_box && gpi_f2 == gpi_floor)
+    {
+        gpi_px += 1;
+
+        gpi_f0 = gpi_floor;
+        gpi_f1 = gpi_player;
+        gpi_f2 = gpi_box;
+        return;
+    }
+
+    // Было: gpi_finPlayer > gpi_box > gpi_floor
+    // Стало: gpi_finish > gpi_player > gpi_box
+    if (gpi_f0 == gpi_finPlayer && gpi_f1 == gpi_box && gpi_f2 == gpi_floor)
+    {
+        gpi_px += 1;
+
+        gpi_f0 = gpi_finish;
+        gpi_f1 = gpi_player;
+        gpi_f2 = gpi_box;
+        return;
+    }
+
+    // Было: gpi_finPlayer > gpi_finBox > gpi_floor
+    // Стало: gpi_finish > gpi_finPlayer > gpi_box
+    if (gpi_f0 == gpi_finPlayer && gpi_f1 == gpi_finBox && gpi_f2 == gpi_floor)
+    {
+        gpi_px += 1;
+
+        gpi_f0 = gpi_finish;
+        gpi_f1 = gpi_finPlayer;
+        gpi_f2 = gpi_box;
+        return;
+    }
+
+    // Было: gpi_player > gpi_finBox > gpi_floor
+    // Стало: gpi_floor > gpi_finPlayer > gpi_box
+    if (gpi_f0 == gpi_player && gpi_f1 == gpi_finBox && gpi_f2 == gpi_floor)
+    {
+        gpi_px += 1;
+
+        gpi_f0 = gpi_floor;
+        gpi_f1 = gpi_finPlayer;
+        gpi_f2 = gpi_box;
+        return;
+    }
+
+    // Было: gpi_player > gpi_box > gpi_finish
+    // Стало: gpi_floor > gpi_player > gpi_finBox
+    if (gpi_f0 == gpi_player && gpi_f1 == gpi_box && gpi_f2 == gpi_finish)
+    {
+        gpi_px += 1;
+
+        gpi_f0 = gpi_floor;
+        gpi_f1 = gpi_player;
+        gpi_f2 = gpi_finBox;
+        return;
+    }
+
+    // Было: gpi_finPlayer > gpi_box > gpi_finish
+    // Стало: gpi_finish > gpi_player > gpi_finBox
+    if (gpi_f0 == gpi_finPlayer && gpi_f1 == gpi_box && gpi_f2 == gpi_finish)
+    {
+        gpi_px += 1;
+
+        gpi_f0 = gpi_finish;
+        gpi_f1 = gpi_player;
+        gpi_f2 = gpi_finBox;
+        return;
+    }
+
+    // Было: gpi_player > gpi_finBox > gpi_finish
+    // Стало: gpi_floor > gpi_finPlayer > gpi_finBox
+    if (gpi_f0 == gpi_player && gpi_f1 == gpi_finBox && gpi_f2 == gpi_finish)
+    {
+        gpi_px += 1;
+
+        gpi_f0 = gpi_floor;
+        gpi_f1 = gpi_finPlayer;
+        gpi_f2 = gpi_finBox;
+        return;
+    }
+
+    // Было: gpi_finPlayer > gpi_finBox > gpi_finish
+    // Стало: gpi_finish > gpi_finPlayer > gpi_finBox
+    if (gpi_f0 == gpi_finPlayer && gpi_f1 == gpi_finBox && gpi_f2 == gpi_finish)
+    {
+        gpi_px += 1;
+
+        gpi_f0 = gpi_finish;
+        gpi_f1 = gpi_finPlayer;
+        gpi_f2 = gpi_finBox;
+        return;
+    }
+}
+
+void gpi_goLeft(gpi_fields& gpi_f0, gpi_fields& gpi_f1, gpi_fields& gpi_f2, int& gpi_px)
+{
+    if (gpi_px - 2 <= 0)
+    {
+        return;
+    }
+
+    // Было: gpi_player > gpi_floor > ...
+    // Стало: gpi_floor > gpi_player > ...
+    if (gpi_f0 == gpi_player && gpi_f1 == gpi_floor)
+    {
+        gpi_px -= 1;
+
+        gpi_f0 = gpi_floor;
+        gpi_f1 = gpi_player;
+        return;
+    }
+
+    // Было: gpi_finPlayer > gpi_floor > ...
+    // Стало: gpi_finish > gpi_player > ...
+    if (gpi_f0 == gpi_finPlayer && gpi_f1 == gpi_floor)
+    {
+        gpi_px -= 1;
+
+        gpi_f0 = gpi_finish;
+        gpi_f1 = gpi_player;
+        return;
+    }
+
+    // Было: gpi_player > gpi_finish > ...
+    // Стало: gpi_floor > gpi_finPlayer > ...
+    if (gpi_f0 == gpi_player && gpi_f1 == gpi_finish)
+    {
+        gpi_px -= 1;
+
+        gpi_f0 = gpi_floor;
+        gpi_f1 = gpi_finPlayer;
+        return;
+    }
+
+    // Было: gpi_finPlayer > gpi_finish > ...
+    // Стало: gpi_finish > gpi_finPlayer > ...
+    if (gpi_f0 == gpi_finPlayer && gpi_f1 == gpi_finish)
+    {
+        gpi_px -= 1;
+
+        gpi_f0 = gpi_finish;
+        gpi_f1 = gpi_finPlayer;
+        return;
+    }
+
+    // Было: gpi_player > gpi_box > gpi_floor
+    // Стало: gpi_floor > gpi_player > gpi_box
+    if (gpi_f0 == gpi_player && gpi_f1 == gpi_box && gpi_f2 == gpi_floor)
+    {
+        gpi_px -= 1;
+
+        gpi_f0 = gpi_floor;
+        gpi_f1 = gpi_player;
+        gpi_f2 = gpi_box;
+        return;
+    }
+
+    // Было: gpi_finPlayer > gpi_box > gpi_floor
+    // Стало: gpi_finish > gpi_player > gpi_box
+    if (gpi_f0 == gpi_finPlayer && gpi_f1 == gpi_box && gpi_f2 == gpi_floor)
+    {
+        gpi_px -= 1;
+
+        gpi_f0 = gpi_finish;
+        gpi_f1 = gpi_player;
+        gpi_f2 = gpi_box;
+        return;
+    }
+
+    // Было: gpi_player > gpi_finBox > gpi_floor
+    // Стало: gpi_floor > gpi_finPlayer > gpi_box
+    if (gpi_f0 == gpi_player && gpi_f1 == gpi_finBox && gpi_f2 == gpi_floor)
+    {
+        gpi_px -= 1;
+
+        gpi_f0 = gpi_floor;
+        gpi_f1 = gpi_finPlayer;
+        gpi_f2 = gpi_box;
+        return;
+    }
+
+    // Было: gpi_finPlayer > gpi_finBox > gpi_floor
+    // Стало: gpi_finish > gpi_finPlayer > gpi_box
+    if (gpi_f0 == gpi_finPlayer && gpi_f1 == gpi_finBox && gpi_f2 == gpi_floor)
+    {
+        gpi_px -= 1;
+
+        gpi_f0 = gpi_finish;
+        gpi_f1 = gpi_finPlayer;
+        gpi_f2 = gpi_box;
+        return;
+    }
+
+    // Было: gpi_player > gpi_box > gpi_finish
+    // Стало: gpi_floor > gpi_player > gpi_finBox
+    if (gpi_f0 == gpi_player && gpi_f1 == gpi_box && gpi_f2 == gpi_finish)
+    {
+        gpi_px -= 1;
+
+        gpi_f0 = gpi_floor;
+        gpi_f1 = gpi_player;
+        gpi_f2 = gpi_finBox;
+        return;
+    }
+
+    // Было: gpi_finPlayer > gpi_box > gpi_finish
+    // Стало: gpi_finish > gpi_player > gpi_finBox
+    if (gpi_f0 == gpi_finPlayer && gpi_f1 == gpi_box && gpi_f2 == gpi_finish)
+    {
+        gpi_px -= 1;
+
+        gpi_f0 = gpi_finish;
+        gpi_f1 = gpi_player;
+        gpi_f2 = gpi_finBox;
+        return;
+    }
+
+    // Было: gpi_player > gpi_finBox > gpi_finish
+    // Стало: gpi_floor > gpi_finPlayer > gpi_finBox
+    if (gpi_f0 == gpi_player && gpi_f1 == gpi_finBox && gpi_f2 == gpi_finish)
+    {
+        gpi_px -= 1;
+
+        gpi_f0 = gpi_floor;
+        gpi_f1 = gpi_finPlayer;
+        gpi_f2 = gpi_finBox;
+        return;
+    }
+
+    // Было: gpi_finPlayer > gpi_finBox > gpi_finish
+    // Стало: gpi_finish > gpi_finPlayer > gpi_finBox
+    if (gpi_f0 == gpi_finPlayer && gpi_f1 == gpi_finBox && gpi_f2 == gpi_finish)
+    {
+        gpi_px -= 1;
+
+        gpi_f0 = gpi_finish;
+        gpi_f1 = gpi_finPlayer;
+        gpi_f2 = gpi_finBox;
+        return;
+    }
 }
