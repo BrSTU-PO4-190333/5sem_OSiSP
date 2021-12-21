@@ -42,6 +42,7 @@ private:
 
 private slots:
     void gpi_animate();
+    void gpi_on_gpi_action_align_triggered();
 };
 
 QStringList gpi_get_1_level();
