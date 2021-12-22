@@ -10,6 +10,7 @@ CONFIG += c++11
 
 SOURCES += \
     gpi_about.cpp \
+    gpi_downloader.cpp \
     gpi_font.cpp \
     gpi_gamewindow.cpp \
     gpi_helper.cpp \
@@ -19,6 +20,7 @@ SOURCES += \
     gpi_mainwindow.cpp
 
 HEADERS += \
+    gpi_downloader.hpp \
     gpi_gamewindow.hpp \
     gpi_helper_class.hpp \
     gpi_mainwindow.hpp

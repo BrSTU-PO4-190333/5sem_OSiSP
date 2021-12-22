@@ -9,6 +9,9 @@
 #include <QSettings>
 #include <QNetworkAccessManager>
 #include <QMessageBox>
+#include <QFile>
+
+#include "gpi_downloader.hpp"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class gpi_MainWindow; }

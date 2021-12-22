@@ -90,15 +90,30 @@ QString gpi_str_verions;
 
         if (client_helper.compare(server_helper)) {
             QMessageBox::information(this, "Процесс обновления", "Найдено обновление helper.dll");
+            Downloader* dd = new Downloader();
+            dd->getData_helper();
         }
 
         if (client_helper_class.compare(server_helper_class)) {
             QMessageBox::information(this, "Процесс обновления", "Найдено обновление helper_class.dll");
+            Downloader* dd = new Downloader();
+            dd->getData_helper_class();
         }
 
         if (client_about.compare(server_about)) {
             QMessageBox::information(this, "Процесс обновления", "Найдено обновление about.dll");
+            Downloader* dd = new Downloader();
+            dd->getData_about();
         }
+
+        QString jsonString = server_document.toJson(QJsonDocument::Indented);
+        qDebug() << "================================" << jsonString;
+        QFile file_version;
+        file_version.setFileName("gpi_versions.json");
+        file_version.open(QIODevice::WriteOnly | QIODevice::Text);
+        QTextStream stream( &file_version );
+        stream << jsonString;
+        file_version.close();
 
     }
     reply->deleteLater();
