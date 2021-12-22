@@ -9,5 +9,6 @@
         <file>_assets/gpi_GameWindow__floor.png</file>
         <file>_assets/gpi_GameWindow__player.png</file>
         <file>_assets/gpi_GameWindow__wall.png</file>
+        <file>gpi_versions.json</file>
     </qresource>
 </RCC>

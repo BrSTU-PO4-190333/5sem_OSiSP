@@ -6,6 +6,7 @@
 #include <QUrlQuery>
 #include <QNetworkReply>
 #include <QUrl>
+#include <QFile>
 
 void gpi_MainWindow::on_gpi_pushButton_update_clicked()
 {
@@ -22,11 +23,26 @@ void gpi_MainWindow::on_gpi_pushButton_update_clicked()
 
 void gpi_MainWindow::onResult(QNetworkReply *reply)
 {
-    qDebug() << "onResult(QNetworkReply *reply)";
+QString client_helper;
+QString client_helper_class;
+QString client_about;
 
-    QMessageBox::information(this, "Процесс обновления", "Происходит сверка версий");
+QString server_helper;
+QString server_helper_class;
+QString server_about;
 
-    if (reply->error())
+QFile file;
+QString file_inner;
+
+QJsonDocument client_document;
+QJsonObject client_json;
+
+QJsonDocument server_document;
+QJsonObject server_json;
+
+QString gpi_str_verions;
+// = = = = = = = = = = = = = = = =
+    if (reply->error() != QNetworkReply::NoError)
     {
         QMessageBox::critical(this, "Проблема со сервером", "Ошибка подключения к серверу");
     }
@@ -34,25 +50,38 @@ void gpi_MainWindow::onResult(QNetworkReply *reply)
     // Если ошибки отсутсвуют
     if(!reply->error())
     {
-        QString client_helper = "2.0.0";
-        QString client_helper_class = "1.0.0";
-        QString client_about = "1.0.0";
+        QMessageBox::information(this, "Процесс обновления", "Происходит сверка версий");
 
-        QString server_helper = "";
-        QString server_helper_class = "";
-        QString server_about = "";
+        // = = = Работа с клиентом = = =
+
+        file.setFileName(":/@/gpi_versions.json"); // Назначаем имя
+        file.open(QIODevice::ReadOnly | QIODevice::Text); // Открываем файл
+        file_inner = file.readAll(); // Читаем текст из файла
+        file.close(); // Закрываем файл
+        qDebug() << file_inner;
+
+        client_document = QJsonDocument::fromJson(file_inner.toUtf8());
+        client_json = client_document.object();
+
+        client_helper = client_json["helper"].toString();
+        client_helper_class = client_json["helper_class"].toString();
+        client_about = client_json["about"].toString();
+
+        // = = = Работа с сервером = = =
 
         // То создаём объект Json Document, считав в него все данные из ответа
-        QJsonDocument document = QJsonDocument::fromJson(reply->readAll());
-        QJsonObject json = document.object();
-        qDebug() << "document:" << document;
-        qDebug() << "json:" << json;
+        server_document = QJsonDocument::fromJson(reply->readAll());
+        server_json = server_document.object();
+        qDebug() << "document:" << server_document;
+        qDebug() << "json:" << server_json;
 
-        server_helper = json.value("helper").toString();
-        server_helper_class = json.value("helper_class").toString();
-        server_about = json.value("about").toString();
+        server_helper = server_json.value("helper").toString();
+        server_helper_class = server_json.value("helper_class").toString();
+        server_about = server_json.value("about").toString();
 
-        QString gpi_str_verions
+        // = = = Сравнение версий = = =
+
+        gpi_str_verions
             = client_helper + " ~ " + server_helper + " - helper.dll \n"
             + client_helper_class + " ~ " + server_helper_class + " - helper_class.dll \n"
             + client_about + " ~ " + server_about  + " - about.dll \n";
