@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>194</height>
+    <height>227</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,10 +15,10 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0">
-     <widget class="QLabel" name="gpi_label_author">
+    <item row="3" column="0" colspan="3">
+     <widget class="QLabel" name="gpi_label_description">
       <property name="text">
-       <string>=Галанин П. И.=</string>
+       <string>gpi_ Главное меню</string>
       </property>
      </widget>
     </item>
@@ -35,21 +35,7 @@
       </property>
      </spacer>
     </item>
-    <item row="0" column="2">
-     <widget class="QLabel" name="gpi_label_title">
-      <property name="text">
-       <string>=gpi_MainWindow=</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="0" colspan="3">
-     <widget class="QLabel" name="gpi_label_description">
-      <property name="text">
-       <string>gpi_ Главное меню</string>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="0" colspan="3">
+    <item row="4" column="0" colspan="3">
      <widget class="QPushButton" name="gpi_pushButton_start">
       <property name="styleSheet">
        <string notr="true">text-align: left</string>
@@ -59,13 +45,38 @@
       </property>
      </widget>
     </item>
-    <item row="3" column="0" colspan="3">
+    <item row="0" column="2">
+     <widget class="QLabel" name="gpi_label_title">
+      <property name="text">
+       <string>=gpi_MainWindow=</string>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="0" colspan="3">
      <widget class="QPushButton" name="gpi_pushButton_close">
       <property name="styleSheet">
        <string notr="true">text-align: left</string>
       </property>
       <property name="text">
        <string>gpi_ Выйти из игры</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QLabel" name="gpi_label_author">
+      <property name="text">
+       <string>=Галанин П. И.=</string>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="0" colspan="3">
+     <widget class="QPushButton" name="gpi_pushButton_update">
+      <property name="styleSheet">
+       <string notr="true">text-align: left
+</string>
+      </property>
+      <property name="text">
+       <string>gpi_ Обновление программы</string>
       </property>
      </widget>
     </item>

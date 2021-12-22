@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -14,6 +14,7 @@ SOURCES += \
     gpi_gamewindow.cpp \
     gpi_helper.cpp \
     gpi_helper_class.cpp \
+    gpi_updater.cpp \
     main.cpp \
     gpi_mainwindow.cpp
 

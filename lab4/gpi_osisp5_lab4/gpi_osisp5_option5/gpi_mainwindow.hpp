@@ -7,6 +7,8 @@
 #include <QDebug>
 #include <QFontDialog>
 #include <QSettings>
+#include <QNetworkAccessManager>
+#include <QMessageBox>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class gpi_MainWindow; }
@@ -25,8 +27,11 @@ private slots:
     void on_gpi_pushButton_close_clicked();
     void gpi_on_gpi_action_about_triggered();
     void gpi_on_gpi_action_font_triggered();
+    void on_gpi_pushButton_update_clicked();
+    void onResult(QNetworkReply *reply);
 
 private:
     Ui::gpi_MainWindow *ui;
+    QNetworkAccessManager *networkManager;
 };
 #endif // GPI_MAINWINDOW_HPP
