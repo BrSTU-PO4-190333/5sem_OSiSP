@@ -5,4 +5,4 @@ services:
         container_name: texlive-full
         volumes:
             - ./../:/home/user/content
-        command: ['make', '-C', '/home/user/content/gpi_texlive-full', 'gpi_build-rep']
+        command: ['make', '-C', '/home/user/content/gpi_texlive-full', 'gpi_build-pdf']
