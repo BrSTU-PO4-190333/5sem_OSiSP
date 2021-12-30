@@ -15,6 +15,7 @@ SOURCES += \
     gpi_gamewindow.cpp \
     gpi_helper.cpp \
     gpi_helper_class.cpp \
+    gpi_thread_updater.cpp \
     gpi_updater.cpp \
     main.cpp \
     gpi_mainwindow.cpp
@@ -23,7 +24,8 @@ HEADERS += \
     gpi_downloader.hpp \
     gpi_gamewindow.hpp \
     gpi_helper_class.hpp \
-    gpi_mainwindow.hpp
+    gpi_mainwindow.hpp \
+    gpi_thread_updater.hpp
 
 FORMS += \
     gpi_gamewindow.ui \

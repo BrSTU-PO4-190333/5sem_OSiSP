@@ -8,9 +8,13 @@
 #include <QUrl>
 #include <QFile>
 
+#include "gpi_thread_updater.hpp"
+
 void gpi_MainWindow::on_gpi_pushButton_update_clicked()
 {
-    qDebug() << "on_gpi_pushButton_update_clicked()";
+    gpi_thread_updater* gpi_thread2 = new gpi_thread_updater("thread2");
+    gpi_thread2->start();
+    /*qDebug() << "on_gpi_pushButton_update_clicked()";
     QMessageBox::information(this, "Процесс обновления", "Происходит запрос на сервер");
     networkManager = new QNetworkAccessManager();
 
@@ -18,7 +22,7 @@ void gpi_MainWindow::on_gpi_pushButton_update_clicked()
     connect(networkManager, &QNetworkAccessManager::finished, this, &gpi_MainWindow::onResult);
 
     // Получаем данные, а именно JSON файл с сайта по определённому url
-    networkManager->get(QNetworkRequest(QUrl("http://localhost:3002/versions")));
+    networkManager->get(QNetworkRequest(QUrl("http://localhost:3002/versions")));*/
 }
 
 void gpi_MainWindow::onResult(QNetworkReply *reply)
